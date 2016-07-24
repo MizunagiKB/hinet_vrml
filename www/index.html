@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Hi-net VRML Viewer" />
+        <meta name="author" content="MizunagiKB" />
+
+        <title>Hi-net VRML Viewer</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap-theme.min.css" />
+        <!-- Bootstrap DatePicker -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker3.min.css" />
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <style>
+            body {
+                font-family:Avenir , "Open Sans" , "Helvetica Neue" , Helvetica , Arial , Verdana , Roboto , "游ゴシック" , "Yu Gothic" , "游ゴシック体" , "YuGothic" , "ヒラギノ角ゴ Pro W3" , "Hiragino Kaku Gothic Pro" , "Meiryo UI" , "メイリオ" , Meiryo , "ＭＳ Ｐゴシック" , "MS PGothic" , sans-serif;
+            }
+            #id_tpl_foot {
+                height: 60px;
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="container">
+            <h1>Hi-net VRML Viewer</h1>
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                データは<a href="http://www.hinet.bosai.go.jp/topics/VRML/?LANG=ja">Hi-net</a>専用です。
+            </div>
+            <h2>操作方法</h2>
+            <dl class="dl-horizontal">
+                <dt>回転</dt>
+                <dd><kbd>Mouse L Button</kbd> + Move</dd>
+                <dt>移動</dt>
+                <dd><kbd>Mouse R Button</kbd> + Move</dd>
+                <dt>拡大・縮小</dt>
+                <dd><kbd>Mouse Wheel</kbd></dd>
+            </dl>
+        </div>
+
+        <div id="main_surface" class="container"></div>
+        <div class="container">
+            <input id="id_fileopen" type="file" name="file[]" multiple />
+        </div>
+
+        <script type="text/javascript">
+
+            // ===============================================================
+            /*!
+             */
+            function fileloader(oCEvt, listFile)
+            {
+                for(var n = 0; n < listFile.length; n ++)
+                {
+                    var reader = new FileReader();
+
+                    reader.onload = function(f)
+                    {
+                        var aryRaw = new Uint8Array(f.target.result)
+                        var loader = new THREE.VRMLLoader();
+                        var s = "";
+
+                        for(var i = 0; i < aryRaw.length; i++){
+                           s += String.fromCharCode(aryRaw[i]);
+                        }
+
+                        var o = loader.parse(s);
+
+                        hinet_vrml.set_scene(o);
+                    };
+                    reader.readAsArrayBuffer(listFile[n]);
+                }
+                console.log(listFile);
+            }
+
+            // ===============================================================
+            /*!
+             */
+            function evt_fileloader(oCEvt)
+            {
+                fileloader(oCEvt, oCEvt.target.files);
+            }
+
+            window.onload = function()
+            {
+                $("#id_fileopen").on("change", evt_fileloader);
+
+                hinet_vrml.main()
+            }
+        </script>
+
+        <!-- jQuery http://jquery.com/ -->
+        <script type="text/javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.0/jquery.js"></script>
+
+        <!-- Bootstrap http://twitter.github.io/bootstrap/ -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <!-- Hogan.js http://twitter.github.io/hogan.js/ -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js"></script>
+        <script src="src/Detector.js"></script>
+        <script src="src/OrbitControls.js"></script>
+        <script src="src/VRMLLoader.js"></script>
+
+        <script src="src/hinet_vrml.js"></script>
+
+    </body>
+</html>
