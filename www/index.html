@@ -44,21 +44,19 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 データは<a href="http://www.hinet.bosai.go.jp/topics/VRML/?LANG=ja">Hi-net</a>専用です。
             </div>
-            <h2>操作方法</h2>
             <dl class="dl-horizontal">
                 <dt>回転</dt>
                 <dd><kbd>Mouse L Button</kbd> + Move</dd>
-                <dt>移動</dt>
+                <dt>平行移動</dt>
                 <dd><kbd>Mouse R Button</kbd> + Move</dd>
-                <dt>拡大・縮小</dt>
+                <dt>拡大縮小</dt>
                 <dd><kbd>Mouse Wheel</kbd></dd>
             </dl>
+            <h5>VRMLファイルを指定してください</h5>
+            <input id="id_fileopen" type="file" name="file[]" multiple />
         </div>
 
         <div id="main_surface" class="container"></div>
-        <div class="container">
-            <input id="id_fileopen" type="file" name="file[]" multiple />
-        </div>
 
         <script type="text/javascript">
 
@@ -81,13 +79,10 @@
                            s += String.fromCharCode(aryRaw[i]);
                         }
 
-                        var o = loader.parse(s);
-
-                        hinet_vrml.set_scene(o);
+                        hinet_vrml.set_scene(loader.parse(s));
                     };
                     reader.readAsArrayBuffer(listFile[n]);
                 }
-                console.log(listFile);
             }
 
             // ===============================================================
@@ -116,11 +111,12 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js"></script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js"></script>
-        <script src="src/Detector.js"></script>
-        <script src="src/OrbitControls.js"></script>
-        <script src="src/VRMLLoader.js"></script>
 
-        <script src="src/hinet_vrml.js"></script>
+        <script src="js/Detector.js"></script>
+        <script src="js/OrbitControls.js"></script>
+        <script src="js/VRMLLoader.js"></script>
+
+        <script src="js/hinet_vrml.js"></script>
 
     </body>
 </html>

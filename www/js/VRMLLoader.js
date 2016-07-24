@@ -63,7 +63,7 @@ THREE.VRMLLoader.prototype = {
 			var defines = {};
 			var float_pattern = /(\b|\-|\+)([\d\.e]+)/;
 			var float2_pattern = /([\d\.\+\-e]+)\s+([\d\.\+\-e]+)/g;
-			var float3_pattern = /([\d\.\+\-e]+)\s+([\d\.\+\-e]+)\s+([\d\.\+\-e]+)/g;
+			var float3_pattern = /([\d\.\+\-e]+)[\s|,]+([\d\.\+\-e]+)[\s|,]+([\d\.\+\-e]+)/g;
 
 			/**
 			* Interpolates colors a and b following their relative distance
@@ -236,6 +236,7 @@ THREE.VRMLLoader.prototype = {
 						break;
 					case 'skyColor':
 					case 'groundColor':
+					case 'color':
 						this.recordingFieldname = fieldName;
 						this.isRecordingColors = true;
 						this.colors = [];
@@ -658,6 +659,20 @@ THREE.VRMLLoader.prototype = {
 
 					}
 
+					if ( undefined !== data.children ) {
+
+						for ( var i = 0; i < data.children.length; i ++ ) {
+
+							var child = data.children[ i ];
+
+							if ( undefined !== child.nodeType ) {
+
+								parseNode( child, object );
+
+							}
+						}
+					}
+
 					parent.add( object );
 
 				} else if ( 'Shape' === data.nodeType ) {
@@ -685,7 +700,7 @@ THREE.VRMLLoader.prototype = {
 					var skyGeometry = new THREE.SphereGeometry( radius, segments, segments );
 					var skyMaterial = new THREE.MeshBasicMaterial( { fog: false, side: THREE.BackSide } );
 
-					if ( data.skyColor.length > 1 ) {
+					if ( undefined !== data.skyColor && data.skyColor.length > 1 ) {
 
 						paintFaces( skyGeometry, radius, data.skyAngle, data.skyColor, true );
 
@@ -693,7 +708,12 @@ THREE.VRMLLoader.prototype = {
 
 					} else {
 
-						var color = data.skyColor[ 0 ];
+						var color = new THREE.Color( 1, 1, 1 );
+
+						if ( undefined !== data.skyColor ) {
+							color = data.skyColor[ 0 ];
+						}
+
 						skyMaterial.color.setRGB( color.r, color.b, color.g );
 
 					}
@@ -734,6 +754,81 @@ THREE.VRMLLoader.prototype = {
 					} else if ( 'Sphere' === data.nodeType ) {
 
 						parent.geometry = new THREE.SphereGeometry( data.radius );
+
+					} else if ( 'PointSet' === data.nodeType ) {
+
+						var geometry = new THREE.Geometry();
+
+						for ( var i = 0, j = data.children.length; i < j; i++ )
+						{
+							var child = data.children[i];
+
+							if ( 'Coordinate' === child.nodeType ) {
+								if ( child.points ) {
+
+									for ( var k = 0, l = child.points.length; k < l; k ++ ) {
+
+										var point = child.points[ k ];
+
+										vec = new THREE.Vector3( point.x, point.y, point.z );
+
+										geometry.vertices.push( vec );
+
+									}
+								}
+							}
+
+							if ( 'Color' === child.nodeType ) {
+								if ( child.color ) {
+
+									for ( var k = 0, l = child.color.length; k < l; k ++ ) {
+
+										var color = child.color[ k ];
+
+										vec = new THREE.Color( color.r, color.g, color.b );
+
+										geometry.colors.push( vec );
+
+									}
+								}
+							}
+						}
+
+						var material = new THREE.PointsMaterial({
+							size: 0.01,
+							vertexColors: THREE.FaceColors
+						});
+						var p = new THREE.Points( geometry, material );
+						scene.add( p );
+
+					} else if ( 'IndexedLineSet' === data.nodeType ) {
+						var indexes, uvIndexes, uvs;
+
+						if ( undefined !== data.coordIndex ) {
+							var geometry = new THREE.Geometry();
+
+							for ( var g = 0; g < data.coordIndex.length; g++ ) {
+								var ary = data.coordIndex[g];
+
+								for ( var i = 1; i < ary.length; i++ ) {
+									var point1 = data.children[0].points[ary[i - 1]];
+									var point2 = data.children[0].points[ary[i - 0]];
+
+									var vec1 = new THREE.Vector3( point1.x, point1.y, point1.z );
+									geometry.vertices.push( vec1 );
+
+									var vec2 = new THREE.Vector3( point2.x, point2.y, point2.z );
+									geometry.vertices.push( vec2 );
+								}
+							}
+
+							var material = new THREE.LineBasicMaterial({
+								color: 0xFFFFFF
+							});
+							var line = new THREE.LineSegments( geometry, material );
+
+							scene.add( line );
+						}
 
 					} else if ( 'IndexedFaceSet' === data.nodeType ) {
 

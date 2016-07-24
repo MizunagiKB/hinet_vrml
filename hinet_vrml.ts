@@ -17,8 +17,8 @@ module hinet_vrml {
     const CAMERA_FOV: number = 60;
     const CAMERA_NEAR: number = 0.01;
     const CAMERA_FAR: number = 1024.0;
-    const SCREEN_W: number = 1024.0;
-    const SCREEN_H: number = 768.0;
+    const SCREEN_W: number = 640.0;
+    const SCREEN_H: number = 480.0;
 
     const CONTROL_SPEED_ROT: number = 5;
     const CONTROL_SPEED_ZOOM: number = 5;
@@ -49,16 +49,14 @@ module hinet_vrml {
         );
     }
 
-    export function set_scene(o:THREE.Scene):void{
+    export function set_scene(o: THREE.Scene): void {
 
-        if(data_scene != null)
-        {
+        if (data_scene != null) {
             root_scene.remove(data_scene);
             data_scene = null;
         }
 
-        if( o != null)
-        {
+        if (o != null) {
             root_scene.add(o);
             data_scene = o;
         }
