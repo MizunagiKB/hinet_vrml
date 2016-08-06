@@ -49,6 +49,7 @@ var hinet_vrml;
         renderer.setSize(SCREEN_W, SCREEN_H);
         var container = document.getElementById("main_surface");
         container.appendChild(renderer.domElement);
+        evt_window_resize();
     }
     function animate() {
         requestAnimationFrame(animate);
@@ -66,6 +67,7 @@ var hinet_vrml;
         }
         init();
         animate();
+        window.addEventListener("resize", evt_window_resize, false);
     }
     hinet_vrml.main = main;
 })(hinet_vrml || (hinet_vrml = {}));
