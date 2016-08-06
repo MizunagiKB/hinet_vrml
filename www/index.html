@@ -27,7 +27,7 @@
 
         <style>
             body {
-                font-family:Avenir , "Open Sans" , "Helvetica Neue" , Helvetica , Arial , Verdana , Roboto , "游ゴシック" , "Yu Gothic" , "游ゴシック体" , "YuGothic" , "ヒラギノ角ゴ Pro W3" , "Hiragino Kaku Gothic Pro" , "Meiryo UI" , "メイリオ" , Meiryo , "ＭＳ Ｐゴシック" , "MS PGothic" , sans-serif;
+                font-family: Avenir, "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, Roboto, "游ゴシック", "Yu Gothic", "游ゴシック体", "YuGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Meiryo UI", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
             }
             #id_tpl_foot {
                 height: 60px;
@@ -39,11 +39,7 @@
     <body>
 
         <div class="container">
-            <h1>Hi-net VRML Viewer</h1>
-            <div class="alert alert-info alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                データは<a href="http://www.hinet.bosai.go.jp/topics/VRML/?LANG=ja">Hi-net</a>専用です。
-            </div>
+            <h1>VRML Viewer&nbsp;<small>for Hi-net</small></h1>
             <dl class="dl-horizontal">
                 <dt>回転</dt>
                 <dd><kbd>Mouse L Button</kbd> + Move</dd>
@@ -52,11 +48,11 @@
                 <dt>拡大縮小</dt>
                 <dd><kbd>Mouse Wheel</kbd></dd>
             </dl>
-            <h5>VRMLファイルを指定してください</h5>
+            <h5>VRMLファイルは<a href="http://www.hinet.bosai.go.jp/topics/VRML/?LANG=ja">Hi-net</a>からダウンロードしたものを指定してください</h5>
             <input id="id_fileopen" type="file" name="file[]" multiple />
         </div>
 
-        <div id="main_surface" class="container"></div>
+        <div id="main_surface"></div>
 
         <script type="text/javascript">
 
@@ -115,7 +111,6 @@
         <script src="js/Detector.js"></script>
         <script src="js/OrbitControls.js"></script>
         <script src="js/VRMLLoader.js"></script>
-
         <script src="js/hinet_vrml.js"></script>
 
     </body>

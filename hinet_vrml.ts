@@ -4,8 +4,7 @@
  * @author @MizunagiKB
  */
 // -------------------------------------------------------------- reference(s)
-/// <reference path="../DefinitelyTyped/jquery/jquery.d.ts"/>
-/// <reference path="../DefinitelyTyped/bootstrap/bootstrap.d.ts"/>
+/// <reference path="./DefinitelyTyped/jquery/jquery.d.ts"/>
 /// <reference path="./DefinitelyTyped/hogan/hogan.d.ts"/>
 /// <reference path="./DefinitelyTyped/threejs/detector.d.ts"/>
 /// <reference path="./DefinitelyTyped/threejs/three.d.ts"/>
@@ -90,6 +89,8 @@ module hinet_vrml {
 
         let container = document.getElementById("main_surface");
         container.appendChild(renderer.domElement);
+
+        evt_window_resize();
     }
 
     // =======================================================================
@@ -113,7 +114,7 @@ module hinet_vrml {
 
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        //controls.handleResize();
+//        controls.handleResize();
     }
 
     // =======================================================================
@@ -129,7 +130,7 @@ module hinet_vrml {
         init();
         animate();
 
-        //window.addEventListener("resize", evt_window_resize, false);
+        window.addEventListener("resize", evt_window_resize, false);
     }
 }
 

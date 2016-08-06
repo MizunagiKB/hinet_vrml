@@ -66,7 +66,8 @@
         "./DefinitelyTyped/threejs/three-vrcontrols.d.ts",
         "./DefinitelyTyped/threejs/three-vreffect.d.ts",
         "./DefinitelyTyped/threejs/three.d.ts",
-        "./hinet_vrml.ts"
+        "./hinet_vrml.ts",
+        "./lib_vrml_loader.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
